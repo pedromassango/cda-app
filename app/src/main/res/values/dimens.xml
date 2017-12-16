@@ -104,6 +104,8 @@
     <dimen name="nave_split_item_category_name_paddingTop">3dp</dimen>
     <dimen name="nave_split_item_category_name_paddingLeft">43dp</dimen>
     <dimen name="nave_split_item_category_name_textSize">16sp</dimen>
+    <dimen name="size8dp">8dp</dimen>
+    <dimen name="size16dp">16dp</dimen>
 
 
     <!-- *************************************************************************************** -->

@@ -43,7 +43,7 @@ dependencies {
     //SelectableRoundedImageView is available through Gradle
 
     //
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    //compile 'com.squareup.okhttp3:okhttp:3.7.0'
 
     // Fire Base
     compile 'com.google.firebase:firebase-crash:11.6.2'

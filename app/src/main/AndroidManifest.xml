@@ -37,6 +37,17 @@
 
         <!-- ******************** ACTIVITY LOGIN ******************** -->
         <activity
+            android:name=".ui.blog.NewPostActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/new_post"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.blog.CommentsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.launch.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/login"

@@ -55,7 +55,7 @@
     <string name="questions">Questões?</string>
 
     <string name="news">Noticias</string>
-    <string name="blog">blog</string>
+    <string name="blog">Blog</string>
 
     <!--:::::::::::::::: MONTHS :::::::::::::::::-->
     <string name="january">Janeiro</string>
@@ -137,6 +137,7 @@
     <string name="exit">Sair</string>
 
     <string name="menu_description">Icon</string>
+    <string name="new_post">Novo</string>
 
     <!-- *************************************************************************************** -->
 </resources>
