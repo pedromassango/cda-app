@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
 
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -35,6 +36,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+//:::::::::::::::: Java and javax
 
 //:::::::::::::::: Same project import
 import com.codingdojoangola.data.sharedpreferences.UserSharedPreferences;
@@ -63,6 +66,8 @@ public class LoginActivity extends AppCompatActivity
     private AutoCompleteTextView mEmailAutoComplete;
     private EditText mPasswordEditText;
     private ProgressDialog mLoginProgressDialog;
+    public static int deviceWidth;
+
 
     private DatabaseReference mDatabaseReference;
 
@@ -86,6 +91,8 @@ public class LoginActivity extends AppCompatActivity
         mLoginProgressDialog = new ProgressDialog(this);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        DisplayMetrics metrics = getApplicationContext().getResources().getDisplayMetrics();
+        deviceWidth = metrics.widthPixels;
     }
 
     //************************************** PUBLIC METHODS ****************************************
