@@ -26,9 +26,13 @@
             android:showDividers="middle">
 
             <EditText
-                android:id="@+id/edt_newPost_title"
+                android:id="@+id/edt_new_post_title"
                 android:hint="Titulo"
+                android:textSize="18dp"
                 android:minHeight="50dp"
+                android:textStyle="bold"
+                android:textColorHint="@color/black"
+                android:textColor="@color/black"
                 android:background="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,13 +43,13 @@
                 android:paddingStart="@dimen/size16dp" />
 
             <EditText
-                android:id="@+id/edt_newPost_Container"
+                android:id="@+id/edt_new_post_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
                 android:hint="O que deseja publicar!"
                 android:background="@android:color/transparent"
-                android:layout_below="@id/edt_newPost_title"
+                android:layout_below="@id/edt_new_post_title"
                 android:paddingEnd="@dimen/size8dp"
                 android:paddingLeft="@dimen/size16dp"
                 android:paddingRight="@dimen/size8dp"

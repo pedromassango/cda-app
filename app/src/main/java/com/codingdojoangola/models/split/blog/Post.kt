@@ -2,6 +2,7 @@ package com.codingdojoangola.models.split.blog
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.IgnoreExtraProperties
 
 /**
@@ -11,13 +12,15 @@ import com.google.firebase.database.IgnoreExtraProperties
     A class to represente a single item Post from Blog.
  */
 @IgnoreExtraProperties
-data class Post(var id: String,
+data class Post(var id: String = FirebaseDatabase.getInstance().reference.push().key,
                 var title: String,
                 var content: String,
                 var author: String,
-                var date: Long) : Parcelable {
+                var authorId: String,
+                var date: Long = System.currentTimeMillis()) : Parcelable {
 
     constructor(parcel: Parcel) : this(
+            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -25,13 +28,14 @@ data class Post(var id: String,
             parcel.readLong()) {
     }
 
-    constructor(): this("", "", "", "", 0)
+    constructor() : this("", "", "", "", "",0)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(title)
         parcel.writeString(content)
         parcel.writeString(author)
+        parcel.writeString(authorId)
         parcel.writeLong(date)
     }
 

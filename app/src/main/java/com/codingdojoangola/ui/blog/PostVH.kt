@@ -1,48 +1,163 @@
 package com.codingdojoangola.ui.blog
 
-import android.content.Intent
+import android.app.Activity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.codingdojoangola.R
+import com.codingdojoangola.models.split.blog.Comment
 import com.codingdojoangola.models.split.blog.Post
+import com.google.firebase.database.*
+import java.util.*
 
 /**
  * Created by pedromassango on 12/16/17.
  */
-class PostVH(val view: View) : RecyclerView.ViewHolder(view) {
+class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<Comment> {
 
     companion object {
         val POST_EXTRA_KEY = "POST_EXTRA_KEY"
     }
 
+    var commentsVisible: Boolean = false
+    var haveComments: Boolean = false
+
     val context = view.context
+
+    val commentsAdapter: CommentAdapter
     var tv_title: TextView
     var tv_date: TextView
     var tv_content: TextView
     var tv_author: TextView
+    var tv_no_comments: TextView
     var btn_comment: Button
+    var recyclerView: RecyclerView
+    var layout_comments: View
 
+    lateinit var post: Post
     /*
         Function to fill blog row.
      */
-    fun bindViews(post: Post){
+    fun bindViews(post: Post, iCommentButtonClickedListener: IClickListener<Post>, iRequestComments: Callbacks.IRequestComments) {
+        this.post = post
+
+        val date = Date(post.date)
+        val postDate = String.format("%s/%s/%s", date.day, date.month, date.year)
 
         tv_title.text = post.title
         tv_content.text = post.content
         tv_author.text = post.author
-        //tv_date.text  //TODO: need to show the date
+        tv_date.text = postDate
 
-        // Comment button click
-        btn_comment.setOnClickListener {
+        // Post action click
+        view.findViewById<View>(R.id.root_view_blog).setOnClickListener {
+            if (commentsVisible) {
+                recyclerView.visibility = View.GONE
+                tv_no_comments.visibility = View.GONE
+                layout_comments.visibility = View.GONE
+                commentsVisible = false
 
-            val commentsIntent = Intent(context, CommentsActivity::class.java)
-            commentsIntent.putExtra(POST_EXTRA_KEY, post)
+                addListener(post, false)
+            } else {
+                layout_comments.visibility = View.VISIBLE
+                recyclerView.visibility = View.VISIBLE
+                commentsVisible = true
 
-            context.startActivity(commentsIntent)
+                addListener(post, true)
+            }
+
+            if (!haveComments) {
+                tv_no_comments.visibility = View.VISIBLE
+                tv_no_comments.text = "Carregando comentarios..."
+                commentsVisible = true
+
+                iRequestComments.getComments(post.id, this)
+            }
         }
+
+        // Comment button clicked
+        btn_comment.setOnClickListener {
+            // Notify the fragment to handle comment click
+            iCommentButtonClickedListener.onClick(post)
+        }
+    }
+
+    private fun addListener(post: Post, enable: Boolean) {
+
+        commentsAdapter.clear()
+
+        val eventListener: ChildEventListener
+        val commentsRef = FirebaseDatabase.getInstance().reference
+                .child("comments")
+                .child(post.id)
+
+        eventListener = object : ChildEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+
+            }
+
+            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+
+            }
+
+            override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+                Log.v("output", "comment: added ")
+
+                val c = p0!!.getValue(Comment::class.java)
+
+                commentsAdapter.add(c!!)
+
+                Log.v("output", "comment: $c")
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot?) {
+                Log.v("output", "comment: removed")
+
+                val c = p0!!.getValue(Comment::class.java)
+
+                commentsAdapter.remove(c!!)
+            }
+        }
+
+        if (enable)
+            commentsRef.addChildEventListener(eventListener)
+        else
+            commentsRef.removeEventListener(eventListener)
+    }
+
+    override fun onSuccess(results: ArrayList<Comment>) {
+
+        commentsVisible = true
+
+        if (results.isEmpty()) {
+            tv_no_comments.visibility = View.VISIBLE
+            tv_no_comments.text = "Sem comentarios."
+            return
+        }
+
+        haveComments = true
+
+        layout_comments.visibility = View.VISIBLE
+        tv_no_comments.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+
+        commentsAdapter.add(results)
+
+        addListener(post, true)
+    }
+
+    override fun onError() {
+
+        tv_no_comments.visibility = View.VISIBLE
+        tv_no_comments.text = "Falha ao obter comentarios."
+        commentsVisible = true
     }
 
     init {
@@ -52,6 +167,15 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view) {
         tv_content = view.findViewById(R.id.textview_blog_conteudo)
         tv_date = view.findViewById(R.id.textview_blog_date)
         tv_title = view.findViewById(R.id.textview_blog_title)
-        Log.i("output", "PostVH setup...")
+
+        layout_comments = view.findViewById<View>(R.id.layout_comments)
+        tv_no_comments = view.findViewById(R.id.not_comments)
+        recyclerView = view.findViewById(R.id.recyclerview_comments)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        commentsAdapter = CommentAdapter(context as Activity)
+
+        recyclerView.adapter = commentsAdapter
+        recyclerView.hasFixedSize()
     }
 }
