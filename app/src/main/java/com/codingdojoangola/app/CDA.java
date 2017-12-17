@@ -14,6 +14,7 @@ import android.util.Log;
 import com.codingdojoangola.models.split.blog.Comment;
 import com.codingdojoangola.server.network.NetworkServer;
 import com.codingdojoangola.ui.split.MainDrawer;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 

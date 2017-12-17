@@ -32,10 +32,12 @@ import java.util.List;
 import com.codingdojoangola.models.split.ItemDrawer;
 import com.codingdojoangola.ui.notifications.QuitApplication;
 import com.codingdojoangola.ui.profile.ProfileActivity;
+import com.codingdojoangola.ui.settings.SettingsActivity;
 import com.codingdojoangola.ui.split.MainDrawer;
 import com.codingdojoangola.ui.split.MenuAdapter;
 
 import com.codingdojoangola.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
         switch (mainDrawer.get(positionSplit).getChoiceType()){
 
             case ""+R.string.settings:
+                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 break;
 
             case ""+R.string.about:
@@ -138,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
             case ""+R.string.exit:
                 // Exit App
+                FirebaseAuth.getInstance().signOut();
                 QuitApplication.newInstance(this).show(transaction, "Alert_Dialog" );
                 break;
 

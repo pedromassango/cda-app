@@ -16,7 +16,11 @@ import android.widget.TextView;
 //:::::::::::::::: Same project import
 import com.codingdojoangola.R;
 import com.codingdojoangola.app.CDA;
+
 import com.codingdojoangola.ui.blog.BlogFragment;
+
+import com.codingdojoangola.ui.members.MembersFragment;
+
 
 public class MainFramePagerFragment extends Fragment {
 
@@ -68,8 +72,13 @@ public class MainFramePagerFragment extends Fragment {
             case ""+R.string.member:
                 switch (position) {
                     case 0:
+
                         //rootView = inflater.inflate(R.layout.fragment_members, container, false);
                         //new MembersFragment(rootView);
+
+                        rootView = inflater.inflate(R.layout.fragment_members, container, false);
+                        new MembersFragment(rootView, getContext());
+
                         break;
                     case 1:
                         break;
@@ -79,6 +88,7 @@ public class MainFramePagerFragment extends Fragment {
                 break;
 
             case ""+R.string.cda:
+
                 switch (position) {
                     case 0:
                         //rootView = inflater.inflate(R.layout.fragment_members, container, false);
@@ -91,6 +101,8 @@ public class MainFramePagerFragment extends Fragment {
                     case 2:
                         break;
                 }
+
+
                 break;
         }
 
