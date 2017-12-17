@@ -35,14 +35,14 @@ class PostAdapter(private val activity: Activity, private val iClickListener: IC
         holder.view.findViewById<View>(R.id.root_view_blog)
                 .setOnLongClickListener{
 
-                    if(userId.equals( post.authorId)) {
+                    if(userId == post.authorId) {
                         AlertDialog.Builder(activity)
                                 .setTitle("Actualizar/Eliminar")
                                 .setMessage("Oque deseja fazer? Escolha uma opcao abaixo.")
                                 .setNegativeButton("Actualizar", { dialog, witch -> updatePost(post)})
                                 .setPositiveButton("Eliminar", { dialog, witch -> deletePost(post, position)})
                     }
-                    return@setOnLongClickListener false
+                    return@setOnLongClickListener true
                 }
     }
 

@@ -76,17 +76,26 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
         // Set up the input
         val edComment = EditText(activity)
         val view = LinearLayout(activity)
-        view.setPadding(8,16,8,0)
+        view.setPadding(18,32,8,32)
         view.addView( edComment)
 
         edComment.hint = "Comentando em: ${data.title}"
 
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         edComment.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
+        edComment.minLines = 2
+
         builder.setView(view)
 
         // Set up the buttons
-        builder.setPositiveButton("Comentar") { dialog, which -> commentOnPost(data, edComment.text.toString()) }
+        builder.setPositiveButton("Comentar") { dialog, which ->
+            if(edComment.text.toString().isEmpty()){
+                Toast.makeText(activity, "Escreva alguma coisa.", Toast.LENGTH_LONG).show()
+                return@setPositiveButton
+            }
+
+            commentOnPost(data, edComment.text.toString())
+        }
 
         builder.show()
     }
@@ -96,14 +105,15 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
      */
     private fun commentOnPost(mPost: Post, commentText: String) {
 
-        var username = FirebaseAuth.getInstance().currentUser!!.displayName ?: String.format("Anonimo %s",System.currentTimeMillis().toString().substring(0,3))
+        var username = FirebaseAuth.getInstance().currentUser!!.displayName ?: "Anonimo"
         val userPhoto = FirebaseAuth.getInstance().currentUser!!.photoUrl.toString()
 
         if(username.isEmpty()){
-            username = String.format("Anonimo %s",System.currentTimeMillis().toString().substring(0,3))
+            username = String.format("Anonimo %s", System.currentTimeMillis().toString().substring(0, 3))
         }
 
         val comment = Comment(
+                id = FirebaseDatabase.getInstance().reference.push().key,
                 author = username,
                 authorPhotoUrl = userPhoto,
                 content = commentText)
@@ -133,6 +143,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
 
         rootRef.child("comments")
                 .child( postId)
+                .limitToFirst(20)
                 .addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
                          getAll.onError()
@@ -140,10 +151,9 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
 
                     override fun onDataChange(p0: DataSnapshot?) {
 
-                        for(shot: DataSnapshot in p0!!.children){
-                            val c = shot.getValue(Comment::class.java)
-                            tmp.add(c!!)
-                        }
+                        p0!!.children
+                                .map { it.getValue(Comment::class.java) }
+                                .mapTo(tmp) { it!! }
 
                         getAll.onSuccess(tmp)
                     }
@@ -162,7 +172,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
     }
 
 
-    fun setupData() {
+    private fun setupData() {
 
         if (NetworkServer.getInstance().isNetworkAvailable) {
             Log.v("output", "setupData, get from server")
@@ -171,6 +181,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
             return
         }
 
+        progressBar.visibility = View.GONE
         tvInfo.visibility = View.VISIBLE
         tvInfo.text = "Nada para mostrar."
     }

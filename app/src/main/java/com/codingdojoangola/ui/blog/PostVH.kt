@@ -22,30 +22,29 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
         val POST_EXTRA_KEY = "POST_EXTRA_KEY"
     }
 
-    var commentsVisible: Boolean = false
-    var haveComments: Boolean = false
+    private var commentsVisible: Boolean = false
+    private var haveComments: Boolean = false
 
     val context = view.context
 
     val commentsAdapter: CommentAdapter
-    var tv_title: TextView
-    var tv_date: TextView
-    var tv_content: TextView
-    var tv_author: TextView
-    var tv_no_comments: TextView
-    var btn_comment: Button
-    var recyclerView: RecyclerView
-    var layout_comments: View
+    private var tv_title: TextView
+    private var tv_date: TextView
+    private var tv_content: TextView
+    private var tv_author: TextView
+    private var tv_no_comments: TextView
+    private var btn_comment: Button
+    private var recyclerView: RecyclerView
+    private var layout_comments: View
 
-    lateinit var post: Post
+    private lateinit var post: Post
     /*
         Function to fill blog row.
      */
     fun bindViews(post: Post, iCommentButtonClickedListener: IClickListener<Post>, iRequestComments: Callbacks.IRequestComments) {
         this.post = post
 
-        val date = Date(post.date)
-        val postDate = String.format("%s/%s/%s", date.day, date.month, date.year)
+        val postDate = TimeUtil().getTimeAgo( post.date)
 
         tv_title.text = post.title
         tv_content.text = post.content
@@ -83,6 +82,8 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
             // Notify the fragment to handle comment click
             iCommentButtonClickedListener.onClick(post)
         }
+
+        layout_comments.setOnClickListener { layout_comments.visibility = View.GONE }
     }
 
     private fun addListener(post: Post, enable: Boolean) {

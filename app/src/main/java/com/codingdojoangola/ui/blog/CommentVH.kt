@@ -16,28 +16,26 @@ import java.util.*
  */
 class CommentVH(val view: View) : RecyclerView.ViewHolder(view) {
 
-    val context = view.context
-    var tv_date: TextView
-    var tv_content: TextView
-    var tv_author: TextView
-    val imgAuthor: ImageView
+    private var tv_date: TextView
+    private var tv_content: TextView
+    private var tv_author: TextView
+    private val imgAuthor: ImageView
 
     /*
         Function to fill comment row.
      */
     fun bindViews(comment: Comment) {
-        val date = Date(comment.date)
-        val postDate = String.format("%s/%s/%s", date.day, date.month, date.year)
+        val commentDate = TimeUtil().getTimeAgo( comment.date)
 
         tv_content.text = comment.content
         tv_author.text = comment.author
-        tv_date.text = postDate
+        tv_date.text = commentDate
 
-        /*if (URLUtil.isValidUrl(comment.authorPhotoUrl)) {
-            Picasso.with(context)
+        if (URLUtil.isValidUrl(comment.authorPhotoUrl)) {
+            Picasso.with(view.context)
                     .load(comment.authorPhotoUrl)
                     .into(imgAuthor)
-        }*/
+        }
     }
 
     init {
