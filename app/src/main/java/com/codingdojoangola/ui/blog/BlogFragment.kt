@@ -71,7 +71,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
     override fun onClick(data: Post) {
 
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle("Escreva seu comentario")
+        builder.setTitle(activity.getString(R.string.write_a_comment))
 
         // Set up the input
         val edComment = EditText(activity)
@@ -79,7 +79,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
         view.setPadding(18,32,8,32)
         view.addView( edComment)
 
-        edComment.hint = "Comentando em: ${data.title}"
+        edComment.hint = String.format("%s: %s", activity.getString(R.string.commenting_in),  data.title)
 
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         edComment.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
@@ -88,9 +88,9 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
         builder.setView(view)
 
         // Set up the buttons
-        builder.setPositiveButton("Comentar") { dialog, which ->
+        builder.setPositiveButton(activity.getString(R.string.str_comment)) { dialog, which ->
             if(edComment.text.toString().isEmpty()){
-                Toast.makeText(activity, "Escreva alguma coisa.", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, activity.getString(R.string.write_something), Toast.LENGTH_LONG).show()
                 return@setPositiveButton
             }
 
@@ -130,7 +130,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
         Method to notify when a comment action was successful.
      */
     override fun onSuccess(p0: Void?) {
-        Toast.makeText(activity, "Comentario enviado!", Toast.LENGTH_LONG)
+    Toast.makeText(activity, activity.getString(R.string.comment_send_success), Toast.LENGTH_LONG)
                 .show()
     }
 
@@ -166,9 +166,9 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
      */
     override fun onFailure(p0: Exception) {
         AlertDialog.Builder(activity)
-                .setTitle("Falha!")
-                .setMessage("Nao foi possivel comentar. Verifique sua internet e Tente novamente!")
-                .setPositiveButton("Fechar", null)
+                .setTitle(activity.getString(R.string.str_fails))
+                .setMessage(activity.getString(R.string.str_comment_title_erro))
+                .setPositiveButton(activity.getString(R.string.str_close), null)
     }
 
 
@@ -183,7 +183,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
 
         progressBar.visibility = View.GONE
         tvInfo.visibility = View.VISIBLE
-        tvInfo.text = "Nada para mostrar."
+        tvInfo.text = activity.getString(R.string.nothing_to_show)
     }
 
     /*
@@ -205,7 +205,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
                 if (!snapshot!!.exists()) {
 
                     tvInfo.visibility = View.VISIBLE
-                    tvInfo.text = "Nada para mostrar."
+                    tvInfo.text = activity.getString(R.string.nothing_to_show)
                     return
                 }
 
@@ -228,7 +228,7 @@ class BlogFragment(val activity: Activity, val view: View) : IClickListener<Post
                 showLoadProgress(false)
 
                 tvInfo.visibility = View.VISIBLE
-                tvInfo.text = "Algo de errado aconteceu! clique aqui para  tente novamente."
+                tvInfo.text = activity.getString(R.string.something_goe_wrong)
             }
 
         })

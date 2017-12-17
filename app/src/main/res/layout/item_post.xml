@@ -74,16 +74,39 @@
                 android:text="Blog description" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <Button
             android:paddingEnd="12dp"
             android:paddingStart="12dp"
-            android:id="@+id/button_comment"
+            android:id="@+id/button_post_ver"
+            android:layout_toLeftOf="@id/button_comment"
+            android:layout_toStartOf="@id/button_comment"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:background="@drawable/custom_ripple"
-            android:text="Comentar"
+            android:text="@string/ver_mais"
             android:textColor="@color/colorAccent" />
+
+            <Button
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:id="@+id/button_comment"
+                android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/custom_ripple"
+            android:text="@string/comentar"
+            android:textColor="@color/colorAccent" />
+
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:visibility="gone"

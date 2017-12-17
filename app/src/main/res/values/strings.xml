@@ -138,6 +138,32 @@
 
     <string name="menu_description">Icon</string>
     <string name="new_post">Novo</string>
+    <string name="ver_mais">VER MAIS</string>
+    <string name="comentar">Comentar</string>
+    <string name="titulo">Titulo</string>
+    <string name="o_que_deseja_publicar">O que deseja publicar!</string>
+    <string name="publicar">Publicar</string>
+    <string name="str_comment_title_erro">Nao foi possivel comentar. Verifique sua internet e Tente novamente!</string>
+    <string name="str_close">Fechar</string>
+    <string name="nothing_to_show">Nada para mostrar.</string>
+    <string name="something_goe_wrong">Algo de errado aconteceu! clique aqui para  tente novamente.</string>
+    <string name="comment_send_success">Comentario enviado!</string>
+    <string name="write_a_comment">Escreva seu comentario</string>
+    <string name="commenting_in">Comentando em:</string>
+    <string name="str_comment">Comentar</string>
+    <string name="write_something">Escreva alguma coisa.</string>
+    <string name="str_check_internet">Nao foi possivel comentar. Verifique sua internet e Tente novamente!</string>
+    <string name="close">Fechar</string>
+    <string name="publishing">Publicando...</string>
+    <string name="update">Actualizar</string>
+    <string name="updating">Actualizando...</string>
+    <string name="add_a_title">Adicione algum titulo!</string>
+    <string name="add_description">Adicione alguma descricao!</string>
+    <string name="updated">Actualizado.</string>
+    <string name="published">Publicado!</string>
+    <string name="str_fail">Falha!</string>
+    <string name="something_wrong">Algo de errado aconteceu, tente novamente!</string>
+    <string name="str_fails">Falha!</string>
 
     <!-- *************************************************************************************** -->
 </resources>

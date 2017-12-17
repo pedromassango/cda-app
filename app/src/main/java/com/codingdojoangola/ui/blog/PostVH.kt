@@ -1,6 +1,8 @@
 package com.codingdojoangola.ui.blog
 
 import android.app.Activity
+import android.content.Intent
+import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -8,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.codingdojoangola.R
+import com.codingdojoangola.app.CDA
 import com.codingdojoangola.models.split.blog.Comment
 import com.codingdojoangola.models.split.blog.Post
 import com.google.firebase.database.*
@@ -20,6 +23,7 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
 
     companion object {
         val POST_EXTRA_KEY = "POST_EXTRA_KEY"
+        val POST_EXTRA_COMMENTS = "POST_EXTRA_COMMENTS"
     }
 
     private var commentsVisible: Boolean = false
@@ -34,6 +38,7 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
     private var tv_author: TextView
     private var tv_no_comments: TextView
     private var btn_comment: Button
+    private var btn_see: Button
     private var recyclerView: RecyclerView
     private var layout_comments: View
 
@@ -53,28 +58,18 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
 
         // Post action click
         view.findViewById<View>(R.id.root_view_blog).setOnClickListener {
-            if (commentsVisible) {
-                recyclerView.visibility = View.GONE
-                tv_no_comments.visibility = View.GONE
-                layout_comments.visibility = View.GONE
-                commentsVisible = false
 
-                addListener(post, false)
-            } else {
-                layout_comments.visibility = View.VISIBLE
-                recyclerView.visibility = View.VISIBLE
-                commentsVisible = true
+            // To expand the CardView
+            singleclick( iRequestComments)
+        }
 
-                addListener(post, true)
-            }
+        // Post button action see
+        btn_see.setOnClickListener {
+            val i = Intent(context, BlogPostDetailActivity::class.java)
+            i.putExtra(PostVH.POST_EXTRA_KEY, post)
 
-            if (!haveComments) {
-                tv_no_comments.visibility = View.VISIBLE
-                tv_no_comments.text = "Carregando comentarios..."
-                commentsVisible = true
-
-                iRequestComments.getComments(post.id, this)
-            }
+            CDA.data = commentsAdapter.comments
+            context.startActivity(i)
         }
 
         // Comment button clicked
@@ -83,7 +78,33 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
             iCommentButtonClickedListener.onClick(post)
         }
 
+
         layout_comments.setOnClickListener { layout_comments.visibility = View.GONE }
+    }
+
+    fun singleclick(iRequestComments: Callbacks.IRequestComments) {
+        if (commentsVisible) {
+            recyclerView.visibility = View.GONE
+            tv_no_comments.visibility = View.GONE
+            layout_comments.visibility = View.GONE
+            commentsVisible = false
+
+            addListener(post, false)
+        } else {
+            layout_comments.visibility = View.VISIBLE
+            recyclerView.visibility = View.VISIBLE
+            commentsVisible = true
+
+            addListener(post, true)
+        }
+
+        if (!haveComments) {
+            tv_no_comments.visibility = View.VISIBLE
+            tv_no_comments.text = "Carregando comentarios..."
+            commentsVisible = true
+
+            iRequestComments.getComments(post.id, this)
+        }
     }
 
     private fun addListener(post: Post, enable: Boolean) {
@@ -163,6 +184,7 @@ class PostVH(val view: View) : RecyclerView.ViewHolder(view), Callbacks.GetAll<C
 
     init {
         btn_comment = view.findViewById(R.id.button_comment)
+        btn_see = view.findViewById(R.id.button_post_ver)
 
         tv_author = view.findViewById(R.id.textview_blog_autor)
         tv_content = view.findViewById(R.id.textview_blog_conteudo)

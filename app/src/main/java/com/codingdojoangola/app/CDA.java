@@ -2,6 +2,7 @@ package com.codingdojoangola.app;
 
 //:::::::::::::::: Android imports
 import android.app.Application;
+import android.util.Log;
 
 //:::::::::::::::: Import from third parties (com, junit, net, org)
 
@@ -10,12 +11,17 @@ import android.app.Application;
 
 
 //:::::::::::::::: Same project import
+import com.codingdojoangola.models.split.blog.Comment;
 import com.codingdojoangola.server.network.NetworkServer;
 import com.codingdojoangola.ui.split.MainDrawer;
+
+import java.util.ArrayList;
 
 public class CDA extends Application {
 
     private  String username;
+
+    public static ArrayList<Comment> data;
 
     //::::::::::::::::::::::::: CACHE :::::::::::::::::::::::::::
 
@@ -39,6 +45,22 @@ public class CDA extends Application {
 
         NetworkServer.initInstance(this);
         MainDrawer.initInstance(this);
+    }
+
+    public static ArrayList<Comment> getData() {
+        if(data == null || data.isEmpty()){
+            Log.v("output", " CDA data empty ");
+            Log.v("output", " CDA data empty ");
+            Log.v("output", " CDA data empty ");
+            data = new ArrayList<>();
+        }
+        return data;
+    }
+
+    public void setData(ArrayList<Comment> mData) {
+        if(data == null){
+            data = mData;
+        }
     }
 
     //************************* GET AND SET **************************

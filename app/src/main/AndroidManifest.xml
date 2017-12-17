@@ -43,6 +43,12 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.blog.BlogPostDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/new_post"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.launch.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/login"

@@ -46,12 +46,12 @@ class NewPostActivity : AppCompatActivity(), OnFailureListener, OnSuccessListene
         // ProgressDialog initialization
         publishDialog = ProgressDialog(this)
         publishDialog.isIndeterminate = true
-        publishDialog.setTitle("Publicando...")
+        publishDialog.setTitle(getString(R.string.publishing))
         publishDialog.setCancelable(false)
 
         if(intent.hasExtra(PostVH.POST_EXTRA_KEY)){
-            title = "Actualizar"
-            publishDialog.setMessage("Actualizando...")
+            title = getString(R.string.update)
+            publishDialog.setMessage(getString(R.string.updating))
 
             post = intent.getParcelableExtra(PostVH.POST_EXTRA_KEY)
             update = true
@@ -84,13 +84,13 @@ class NewPostActivity : AppCompatActivity(), OnFailureListener, OnSuccessListene
 
         // check if Title is empty
         if (title.trim().isBlank()) {
-            showToast("Adicione algum titulo!")
+            showToast(getString(R.string.add_a_title))
             return
         }
 
         // check if Content is empty
         if (content.trim().isBlank()) {
-            showToast("Adicione alguma descricao!")
+            showToast(getString(R.string.add_description))
             return
         }
 
@@ -121,9 +121,9 @@ class NewPostActivity : AppCompatActivity(), OnFailureListener, OnSuccessListene
         publishDialog.dismiss()
 
         if (update){
-            showToast("Actualizado.")
+            showToast(getString(R.string.updated))
         }else {
-            showToast("Publicado!")
+            showToast(getString(R.string.published))
         }
 
         // Close this activity
@@ -144,8 +144,8 @@ class NewPostActivity : AppCompatActivity(), OnFailureListener, OnSuccessListene
      */
     private fun showPublishError(message: String?) {
         AlertDialog.Builder(this)
-                .setTitle("Falha!")
-                .setMessage(message ?: "Algo de errado aconteceu, tente novamente!")
-                .setPositiveButton("OK", null)
+                .setTitle(getString(R.string.str_fail))
+                .setMessage(message ?: getString(R.string.something_wrong))
+                .setPositiveButton(getString(R.string.ok), null)
     }
 }

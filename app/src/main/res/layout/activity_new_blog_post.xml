@@ -27,7 +27,7 @@
 
             <EditText
                 android:id="@+id/edt_new_post_title"
-                android:hint="Titulo"
+                android:hint="@string/titulo"
                 android:textSize="18dp"
                 android:minHeight="50dp"
                 android:textColor="@color/black"
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
-                android:hint="O que deseja publicar!"
+                android:hint="@string/o_que_deseja_publicar"
                 android:background="@android:color/transparent"
                 android:layout_below="@id/edt_new_post_title"
                 android:paddingEnd="@dimen/size8dp"
